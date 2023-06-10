@@ -7,6 +7,7 @@ import { BoardTitle } from '../components/BoardTitle';
 import { BoardModal } from '../components/BoardModal';
 import { BoardsPageSkeleton } from '../components/BoardsPageSkeleton';
 import { useStateValue } from '../application/state-provider';
+import { ConferenceFormType } from '../Constants';
 
 export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
     const [state, dispatch] = useStateValue();
@@ -74,6 +75,7 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
                                     starBoard(board?.key, !board.starred)
                                 }
                                 starred={board.starred}
+                                board={board}
                             />
                         ))}
                     </div>
@@ -95,6 +97,7 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
                         handleBoardClick={() => history.push(`boards/${board?.key}`)}
                         handleBoardStarToggling={() => starBoard(board?.key, !board.starred)}
                         starred={board.starred}
+                        board={board}
                     />
                 ))}
                 <BoardTitle
@@ -105,9 +108,10 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
             </div>
 
             <BoardModal
-                action={addBoard}
+                addBoard={addBoard}
                 closeModal={() => setModalVisible(false)}
                 visible={modalVisible}
+                type={ConferenceFormType.CREATE}
             />
         </div>
     );
