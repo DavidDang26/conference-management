@@ -24,7 +24,7 @@ const SignInForm = () => {
             console.log('result', result);
             dispatch({
                 type: actionTypes.SET_USER,
-                user: result.user.multiFactor.user,
+                user: result.user,
             });
             history.push(ROUTES.BOARDS);
             setLoading(false);
