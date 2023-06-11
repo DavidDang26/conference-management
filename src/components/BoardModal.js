@@ -5,6 +5,8 @@ import moment from 'moment';
 import { getUser } from '../application/services/auth';
 import { convertUser } from '../utils/convertFromRaw';
 import { ConferenceFormType } from '../Constants';
+import MDEditor from '@uiw/react-md-editor';
+import { v4 as uuid } from 'uuid';
 
 export const BoardModal = (props) => {
     const { TextArea } = Input;
@@ -18,6 +20,27 @@ export const BoardModal = (props) => {
         paperRequirement: '',
         deadlineSubmission: '',
         joinTarget: '',
+        postMd: '',
+        lanes: [
+            {
+                id: uuid(),
+                currentPage: 1,
+                title: 'Paper submitted for conference',
+                cards: [],
+            },
+            {
+                id: uuid(),
+                currentPage: 1,
+                title: 'Reject',
+                cards: [],
+            },
+            {
+                id: uuid(),
+                currentPage: 1,
+                title: 'Accept',
+                cards: [],
+            },
+        ],
     };
     const [conference, setConference] = useState(
         board && type === ConferenceFormType.UPDATE ? board : defaultConference
@@ -32,6 +55,7 @@ export const BoardModal = (props) => {
         paperRequirement,
         deadlineSubmission,
         joinTarget,
+        postMd,
     } = conference;
 
     const isEmptyText = (text) => !text || !text.trim();
@@ -92,6 +116,13 @@ export const BoardModal = (props) => {
         }));
     };
 
+    const handlePostMdChange = (value) => {
+        setConference((conference) => ({
+            ...conference,
+            postMd: value,
+        }));
+    };
+
     return (
         // <div
         //     role="button"
@@ -104,51 +135,55 @@ export const BoardModal = (props) => {
         // >
         <Modal
             title={type === ConferenceFormType.CREATE ? 'Add new conference' : 'Update conference'}
-            width="400px"
+            width="1300px"
             visible={visible}
             onCancel={closeModal}
             footer={null}
         >
             <form className={`w-full`} onSubmit={(event) => handleSubmitBoard(event)}>
-                <div className="mb-5">
-                    <label htmlFor="organizer">Organizer (You)</label>
-                    <Input
-                        onChange={handleTitleChange}
-                        value={organizer?.displayName || ''}
-                        id="organizer"
-                        disabled
-                    />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="title">Title *</label>
-                    <Input
-                        onChange={handleTitleChange}
-                        value={title}
-                        id="title"
-                        placeholder="Title"
-                    />
-                </div>
-
-                <div className="mb-5">
-                    <label htmlFor="timeOccur">Time occur</label>
-                    <DatePicker
-                        value={timeOccur ? moment(timeOccur) : null}
-                        showTime
-                        onChange={handleDateChange}
-                        className="w-full"
-                        id="timeOccur"
-                        defaultValue={undefined}
-                    />
+                <div className="flex justify-between gap-5">
+                    <div className="mb-5 w-1/2">
+                        <label htmlFor="organizer">Organizer (You)</label>
+                        <Input
+                            onChange={handleTitleChange}
+                            value={organizer?.displayName || ''}
+                            id="organizer"
+                            disabled
+                        />
+                    </div>
+                    <div className="mb-5 w-1/2">
+                        <label htmlFor="title">Title *</label>
+                        <Input
+                            onChange={handleTitleChange}
+                            value={title}
+                            id="title"
+                            placeholder="Title"
+                        />
+                    </div>
                 </div>
 
-                <div className="mb-5">
-                    <label htmlFor="title">Location</label>
-                    <Input
-                        onChange={handleLocationChange}
-                        value={location}
-                        id="location"
-                        placeholder="Location"
-                    />
+                <div className="flex justify-between gap-5">
+                    <div className="mb-5 w-1/2">
+                        <label htmlFor="timeOccur">Time occur</label>
+                        <DatePicker
+                            value={timeOccur ? moment(timeOccur) : null}
+                            showTime
+                            onChange={handleDateChange}
+                            className="w-full"
+                            id="timeOccur"
+                            defaultValue={undefined}
+                        />
+                    </div>
+
+                    <div className="mb-5 w-1/2">
+                        <label htmlFor="title">Location</label>
+                        <Input
+                            onChange={handleLocationChange}
+                            value={location}
+                            id="location"
+                            placeholder="Location"
+                        />
+                    </div>
                 </div>
 
                 <div className="mb-5">
@@ -161,26 +196,34 @@ export const BoardModal = (props) => {
                         onChange={handlePaperRequirementChange}
                     />
                 </div>
-                <div className="mb-5">
-                    <label htmlFor="timeOccur">Paper submit deadline</label>
-                    <DatePicker
-                        value={deadlineSubmission ? moment(deadlineSubmission) : null}
-                        showTime
-                        onChange={handleDeadlineChange}
-                        className="w-full"
-                        id="timeOccur"
-                        defaultValue={undefined}
-                    />
+
+                <div className="flex justify-between gap-5">
+                    <div className="mb-5 w-1/2">
+                        <label htmlFor="timeOccur">Paper submit deadline</label>
+                        <DatePicker
+                            value={deadlineSubmission ? moment(deadlineSubmission) : null}
+                            showTime
+                            onChange={handleDeadlineChange}
+                            className="w-full"
+                            id="timeOccur"
+                            defaultValue={undefined}
+                        />
+                    </div>
+
+                    <div className="mb-5 w-1/2">
+                        <label htmlFor="title">Join target</label>
+                        <Input
+                            onChange={handleJoinTargetChange}
+                            value={joinTarget}
+                            id="target"
+                            placeholder="Join target"
+                        />
+                    </div>
                 </div>
 
-                <div className="mb-5">
-                    <label htmlFor="title">Join target</label>
-                    <Input
-                        onChange={handleJoinTargetChange}
-                        value={joinTarget}
-                        id="target"
-                        placeholder="Join target"
-                    />
+                <div className="container mt-5 mb-5">
+                    <MDEditor value={postMd} onChange={handlePostMdChange} />
+                    {/* <MDEditor.Markdown source={value} style={{ whiteSpace: "pre-wrap" }} /> */}
                 </div>
 
                 <Button

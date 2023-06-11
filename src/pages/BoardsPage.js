@@ -29,7 +29,11 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
             if (!snapshot) {
                 return;
             }
-            setBoards(objectToArray(snapshot.val() || {}));
+            setBoards(
+                objectToArray(snapshot.val() || {}).filter(
+                    (conference) => conference.organizer.id === user.uid
+                )
+            );
             setLoading(false);
         });
     };
@@ -87,9 +91,9 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
                     </div>
                 </>
             )}
-            <div>
+            {/* <div>
                 <img src={user.photoURL} alt="" />
-            </div>
+            </div> */}
 
             <div className="flex mb-3 items-center text-xl">
                 <UserOutlined className={`mr-2`} /> Personal Conference Management
@@ -120,6 +124,7 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
                 visible={modalVisible}
                 type={ConferenceFormType.CREATE}
             />
+          
         </div>
     );
 });

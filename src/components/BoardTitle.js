@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { BoardModal } from './BoardModal';
 import { ConferenceFormType } from '../Constants';
 import { boardService } from '../application/services/board';
+import AddReviewerModal from '../components/AddReviewerModal';
 
 export const BoardTitle = ({
     title,
@@ -16,6 +17,7 @@ export const BoardTitle = ({
     board,
 }) => {
     const [modalVisible, setModalVisible] = useState(false);
+    const [reviewModalVisible, setReviewModalVisible] = useState(false);
 
     const updateConference = async (key, data) => {
         await boardService.updateBoard(key, data);
@@ -52,17 +54,37 @@ export const BoardTitle = ({
                         setModalVisible(false);
                     }}
                 ></BoardModal>
+                <AddReviewerModal
+                    closeModal={(e) => {
+                        e.stopPropagation();
+                        setReviewModalVisible(false);
+                    }}
+                    visible={reviewModalVisible}
+                />
             </div>
             {!addition && (
                 <div className="flex justify-between items-center">
                     <Button
-                        className="rounded-md"
+                        className="rounded-md font-bold"
                         onClick={(e) => {
                             e.stopPropagation();
                             setModalVisible(true);
                         }}
+                        type="primary"
+                        style={{ background: 'rgb(217 119 6)' }}
                     >
                         Update conference
+                    </Button>
+                    <Button
+                        className="rounded-md font-bold"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setReviewModalVisible(true);
+                        }}
+                        style={{ background: 'rgb(16 185 129)' }}
+                        type="primary"
+                    >
+                        Add reviewer
                     </Button>
                     <div className="flex gap-2">
                         <div
