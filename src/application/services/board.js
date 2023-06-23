@@ -15,10 +15,18 @@ const deleteBoard = (key) => userBoard(key).remove();
 
 const updateBoard = (key, data) => userBoard(key).update(data);
 
+const addReviewer = (key, reviewer) => {
+    const customChild = userBoard(key).child('reviewers').child(reviewer.id);
+    if (customChild.id) {
+        return;
+    } else customChild.set(reviewer);
+};
+
 export const boardService = {
     userBoards,
     getBoard,
     addBoard,
     deleteBoard,
     updateBoard,
+    addReviewer,
 };

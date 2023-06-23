@@ -7,6 +7,8 @@ import { actionTypes } from '../auth/reducer';
 import { useStateValue } from '../application/state-provider';
 import { authService } from '../application/services';
 import { ROUTES } from '../application/constants';
+import { adminService } from '../application/services/user';
+import { convertUser } from '../utils/convertFromRaw';
 
 const SignInForm = () => {
     const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ const SignInForm = () => {
         try {
             setLoading(true);
             const result = await auth.signInWithPopup(provider);
-            console.log('result', result);
+            await adminService.addAdmin(convertUser(result.user));
             dispatch({
                 type: actionTypes.SET_USER,
                 user: result.user,

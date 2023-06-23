@@ -5,9 +5,11 @@ import { boardService } from '../application/services';
 import { withAuthorization } from '../auth/auth-hoc';
 import { BoardSkeleton } from '../components/BoardSkeleton';
 import CardModal from '../components/CardModal';
+import { useStateValue } from '../application/state-provider';
 
 export const BoardPage = withRouter(
     withAuthorization((authUser) => !!authUser)((props) => {
+        const [state, dispatch] = useStateValue();
         const [board, setBoard] = useState({
             lanes: [],
         });
@@ -15,6 +17,7 @@ export const BoardPage = withRouter(
         const [visible, setVisible] = useState(false);
         const [activeCard, setActiveCard] = useState({});
         const [activeLane, setActiveLane] = useState({});
+        const { user } = state;
 
         useEffect(() => {
             (async () => {
@@ -79,9 +82,26 @@ export const BoardPage = withRouter(
                 </div>
                 <Board
                     className={`pt-5 bg-blue-400 h-full`}
-                    canAddLanes={true}
-                    editable={true}
-                    draggable={true}
+                    canAddLanes={
+                        board.organizer &&
+                        board.organizer.id &&
+                        board.organizer.id === state.user.uid
+                    }
+                    cardDraggable={
+                        board.organizer &&
+                        board.organizer.id &&
+                        board.organizer.id === state.user.uid
+                    }
+                    editable={
+                        board.organizer &&
+                        board.organizer.id &&
+                        board.organizer.id === state.user.uid
+                    }
+                    draggable={
+                        board.organizer &&
+                        board.organizer.id &&
+                        board.organizer.id === state.user.uid
+                    }
                     data={{
                         lanes: board.lanes || [],
                     }}
