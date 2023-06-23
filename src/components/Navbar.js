@@ -4,15 +4,18 @@ import { Link, withRouter } from 'react-router-dom';
 import React from 'react';
 import { signOut } from '../application/services/auth';
 import { ROUTES } from '../application/constants';
+import { useStateValue } from '../application/state-provider';
 
 export const Navbar = withRouter(() => {
+    const [state, dispatch] = useStateValue();
+    const { user } = state;
     return (
         <nav
-            className={`flex justify-between bg-blue-500 text-white px-3 py-2 absolute z-10 top-0 left-0 right-0`}
+            className={`flex justify-between bg-blue-500 text-white px-5 py-1 absolute z-10 top-0 left-0 right-0`}
         >
             <Link to={ROUTES.BOARDS}>
                 <div
-                    className={`w-8 h-8 flex bg-blue-400 justify-center items-center rounded text-white`}
+                    className={`w-10 h-10 flex bg-blue-400 justify-center items-center rounded text-white`}
                 >
                     <HomeOutlined />
                 </div>
@@ -27,10 +30,12 @@ export const Navbar = withRouter(() => {
                 }
                 trigger={['click']}
             >
-                <div
-                    className={`w-8 h-8 flex bg-blue-400 justify-center items-center rounded text-white`}
-                >
-                    <SettingOutlined />
+                <div className={`w-10 h-10 flex  justify-center items-center rounded text-white`}>
+                    {user && user.photoURL ? (
+                        <img src={user.photoURL} alt="avatar" className="w-10 h-10 rounded-full" />
+                    ) : (
+                        <SettingOutlined />
+                    )}
                 </div>
             </Dropdown>
         </nav>
