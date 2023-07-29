@@ -6,7 +6,6 @@ import { BoardModal } from './BoardModal';
 import { ConferenceFormType } from '../Constants';
 import { boardService } from '../application/services/board';
 import AddReviewerModal from '../components/AddReviewerModal';
-
 export const BoardTitle = ({
     title,
     handleBoardClick,
@@ -14,11 +13,11 @@ export const BoardTitle = ({
     handleBoardStarToggling,
     handleDeleteBoard,
     starred,
+    reviewConference = false,
     board,
 }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [reviewModalVisible, setReviewModalVisible] = useState(false);
-
     const updateConference = async (key, data) => {
         await boardService.updateBoard(key, data);
     };
@@ -59,33 +58,38 @@ export const BoardTitle = ({
                         e.stopPropagation();
                         setReviewModalVisible(false);
                     }}
+                    board={board}
                     visible={reviewModalVisible}
                 />
             </div>
             {!addition && (
                 <div className="flex justify-between items-center">
-                    <Button
-                        className="rounded-md font-bold"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setModalVisible(true);
-                        }}
-                        type="primary"
-                        style={{ background: 'rgb(217 119 6)' }}
-                    >
-                        Update conference
-                    </Button>
-                    <Button
-                        className="rounded-md font-bold"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setReviewModalVisible(true);
-                        }}
-                        style={{ background: 'rgb(16 185 129)' }}
-                        type="primary"
-                    >
-                        Add reviewer
-                    </Button>
+                    {!reviewConference && (
+                        <Button
+                            className="rounded-md font-bold"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setModalVisible(true);
+                            }}
+                            type="primary"
+                            style={{ background: 'rgb(217 119 6)' }}
+                        >
+                            Update conference
+                        </Button>
+                    )}
+                    {!reviewConference && (
+                        <Button
+                            className="rounded-md font-bold"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setReviewModalVisible(true);
+                            }}
+                            style={{ background: 'rgb(16 185 129)' }}
+                            type="primary"
+                        >
+                            Add reviewer
+                        </Button>
+                    )}
                     <div className="flex gap-2">
                         <div
                             role="button"
@@ -103,25 +107,27 @@ export const BoardTitle = ({
                                 <StarOutlined className="transform transition-all text-white text-opacity-75 hover:text-opacity-100 hover:translate-x-px scale-100 hover:scale-110 mt-auto" />
                             )}
                         </div>
-                        <div
-                            role="button"
-                            tabIndex="-1"
-                            className="flex"
-                            onKeyDown={() => {}}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleDeleteBoard();
-                            }}
-                        >
-                            <DeleteOutlined className="transform transition-all text-white text-opacity-75 hover:text-opacity-100 hover:translate-x-px scale-100 hover:scale-110 mt-auto" />
-                        </div>
+
+                        {!reviewConference && (
+                            <div
+                                role="button"
+                                tabIndex="-1"
+                                className="flex"
+                                onKeyDown={() => {}}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteBoard();
+                                }}
+                            >
+                                <DeleteOutlined className="transform transition-all text-white text-opacity-75 hover:text-opacity-100 hover:translate-x-px scale-100 hover:scale-110 mt-auto" />
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
         </div>
     );
 };
-
 BoardTitle.propTypes = {
     title: PropTypes.string.isRequired,
     addition: PropTypes.bool,

@@ -8,6 +8,7 @@ import { BoardModal } from '../components/BoardModal';
 import { BoardsPageSkeleton } from '../components/BoardsPageSkeleton';
 import { useStateValue } from '../application/state-provider';
 import { ConferenceFormType } from '../Constants';
+import { objectToArray } from '../utils';
 
 export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
     const [state, dispatch] = useStateValue();
@@ -29,11 +30,7 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
             if (!snapshot) {
                 return;
             }
-            setBoards(
-                objectToArray(snapshot.val() || {}).filter(
-                    (conference) => conference.organizer.id === user.uid
-                )
-            );
+            setBoards(objectToArray(snapshot.val() || {}));
             setLoading(false);
         });
     };
@@ -52,13 +49,6 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
         await boardService.deleteBoard(board);
     };
 
-    const objectToArray = (data) =>
-        !data
-            ? []
-            : Object.values(data).map((value, index) => ({
-                  ...value,
-                  key: Object.keys(data)[index],
-              }));
 
     if (loading) {
         return <BoardsPageSkeleton count={4} />;
@@ -68,7 +58,7 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
 
     return (
         <div className={`pt-16 py-4 px-3`}>
-            {!!starredBoards.length && (
+            {/* {!!starredBoards.length && (
                 <>
                     <div className="flex mb-3 items-center text-xl">
                         <StarOutlined className={`mr-2`} /> Starred Boards
@@ -90,27 +80,56 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
                         ))}
                     </div>
                 </>
-            )}
+            )} */}
             {/* <div>
                 <img src={user.photoURL} alt="" />
             </div> */}
 
             <div className="flex mb-3 items-center text-xl">
-                <UserOutlined className={`mr-2`} /> Personal Conference Management
+
+            <UserOutlined className={`mr-2`} />
+                Conference as organizer
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-                {boards.map((board) => (
-                    <BoardTitle
-                        key={board?.key}
-                        title={board.title}
-                        handleBoardClick={() => history.push(`boards/${board?.key}`)}
-                        handleBoardStarToggling={() => starBoard(board?.key, !board.starred)}
-                        handleDeleteBoard={() => deleteBoard(board?.key)}
-                        starred={board.starred}
-                        board={board}
-                    />
-                ))}
+                {boards
+                    .filter((conference) => conference.organizer.id === user.uid)
+                    .map((board) => (
+                        <BoardTitle
+                            key={board?.key}
+                            title={board.title}
+                            handleBoardClick={() => history.push(`boards/${board?.key}`)}
+                            handleBoardStarToggling={() => starBoard(board?.key, !board.starred)}
+                            handleDeleteBoard={() => deleteBoard(board?.key)}
+                            starred={board.starred}
+                            board={board}
+                        />
+                    ))}
+            </div>
+
+            <div className="flex mb-3 items-center text-xl">
+                <UserOutlined className={`mr-2`} />
+                Conference as reviewer
+            </div>
+
+            <div className="grid grid-cols-4 gap-4">
+            {boards.filter((conference) =>
+                        (conference && conference.reviewers
+                            ? Object.keys(conference.reviewers)
+                            : []
+                        ).includes(user.uid)
+                    ).map((board) => (
+                        <BoardTitle
+                            key={board?.key}
+                            title={board.title}
+                            handleBoardClick={() => history.push(`boards/${board?.key}`)}
+                            handleBoardStarToggling={() => starBoard(board?.key, !board.starred)}
+                            handleDeleteBoard={() => deleteBoard(board?.key)}
+                            starred={board.starred}
+                            board={board}
+                            reviewConference={true}
+                        />
+                    ))}
                 <BoardTitle
                     title="Add new conference"
                     addition={true}

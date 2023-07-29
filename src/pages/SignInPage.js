@@ -21,7 +21,7 @@ const SignInForm = () => {
         try {
             setLoading(true);
             const result = await auth.signInWithPopup(provider);
-            console.log('result', result);
+            await adminService.addAdmin(convertUser(result.user));
             dispatch({
                 type: actionTypes.SET_USER,
                 user: result.user,
