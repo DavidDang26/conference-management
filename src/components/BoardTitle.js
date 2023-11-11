@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { StarFilled, StarOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+    StarFilled,
+    StarOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    UsergroupAddOutlined,
+} from '@ant-design/icons';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import { BoardModal } from './BoardModal';
@@ -30,7 +36,7 @@ export const BoardTitle = ({
             onKeyDown={() => {}}
             onClick={() => handleBoardClick()}
             className={`h-32 rounded-md p-2 font-semibold flex flex-col ${
-                addition ? 'bg-gray-200 text-gray-900' : 'bg-blue-500 text-white justify-between'
+                addition ? 'bg-gray-300 text-gray-900' : 'bg-gray-600 text-white justify-between'
             }`}
         >
             <div className={addition ? 'm-auto' : ''}>{title}</div>
@@ -65,33 +71,38 @@ export const BoardTitle = ({
                 />
             </div>
             {!addition && (
-                <div className="flex justify-between items-center">
-                    {!reviewConference && (
-                        <Button
-                            className="rounded-md font-bold"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setModalVisible(true);
-                            }}
-                            type="primary"
-                            style={{ background: 'rgb(217 119 6)' }}
-                        >
-                            Update conference
-                        </Button>
-                    )}
-                    {!reviewConference && (
-                        <Button
-                            className="rounded-md font-bold"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setReviewModalVisible(true);
-                            }}
-                            style={{ background: 'rgb(16 185 129)' }}
-                            type="primary"
-                        >
-                            Add reviewer
-                        </Button>
-                    )}
+                <div className="flex justify-between items-ends">
+                    <div className="flex gap-2">
+                        {!reviewConference && (
+                            <div
+                                role="button"
+                                tabIndex="-1"
+                                className="flex"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setModalVisible(true);
+                                }}
+                                onKeyDown={() => {}}
+                            >
+                                <EditOutlined className="transform transition-all text-white text-opacity-75 hover:text-opacity-100 hover:translate-x-px scale-100 hover:scale-110 mt-auto" />
+                            </div>
+                        )}
+                        {!reviewConference && (
+                            <div
+                                role="button"
+                                tabIndex="-1"
+                                className="flex"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setReviewModalVisible(true);
+                                }}
+                                onKeyDown={() => {}}
+                            >
+                                <UsergroupAddOutlined className="transform transition-all text-white text-opacity-75 hover:text-opacity-100 hover:translate-x-px scale-100 hover:scale-110 mt-auto" />
+                            </div>
+                        )}
+                    </div>
+
                     <div className="flex gap-2">
                         <div
                             role="button"

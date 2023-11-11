@@ -11,11 +11,11 @@ export const Navbar = withRouter(() => {
     const { user } = state;
     return (
         <nav
-            className={`flex justify-between bg-blue-500 text-white px-5 py-1 absolute z-10 top-0 left-0 right-0`}
+            className={`flex justify-between bg-gray-500 text-white px-5 py-1 absolute z-10 top-0 left-0 right-0`}
         >
             <Link to={ROUTES.BOARDS}>
                 <div
-                    className={`w-10 h-10 flex bg-blue-400 justify-center items-center rounded text-white`}
+                    className={`w-10 h-10 flex bg-gray-400 justify-center items-center rounded text-white`}
                 >
                     <HomeOutlined />
                 </div>

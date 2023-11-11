@@ -73,15 +73,13 @@ export const BoardPage = withRouter(
             return <BoardSkeleton count={5} />;
         }
 
-        console.log(board);
-
         return (
             <>
-                <div className="text-3xl pt-16  text-center bg-blue-400 text-white font-bold">
+                <div className="text-3xl pt-16 text-center bg-gray-700 text-white font-bold">
                     {board.title}
                 </div>
                 <Board
-                    className={`pt-5 bg-blue-400 h-full`}
+                    className={`pt-5 bg-gray-700 h-full`}
                     canAddLanes={
                         board.organizer &&
                         board.organizer.id &&

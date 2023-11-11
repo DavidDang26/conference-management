@@ -7,7 +7,7 @@ export const BoardSkeleton = (props) => {
     const boardTitles = Array(props.count).fill({});
 
     return (
-        <div className={`pt-16 bg-blue-400 h-full`}>
+        <div className={`pt-16 bg-gray-400 h-full`}>
             <div className="grid grid-cols-5 gap-2.5  ml-2.5 mr-2.5">
                 {boardTitles.map((id) => (
                     <div className="bg-gray-200 rounded pl-4 pr-3 pt-3" key={nanoid()}>

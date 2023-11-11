@@ -1,43 +1,42 @@
-import { Button, Input, Modal, DatePicker } from 'antd';
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import { getUser } from '../application/services/auth';
-import { convertUser } from '../utils/convertFromRaw';
-import { ConferenceFormType } from '../Constants';
-import MDEditor from '@uiw/react-md-editor';
-import { v4 as uuid } from 'uuid';
+import { Button, Input, Modal, DatePicker } from "antd";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import moment from "moment";
+import { getUser } from "../application/services/auth";
+import { convertUser } from "../utils/convertFromRaw";
+import { ConferenceFormType } from "../Constants";
+import MDEditor from "@uiw/react-md-editor";
+import { v4 as uuid } from "uuid";
 
 export const BoardModal = (props) => {
     const { TextArea } = Input;
     const { closeModal, addBoard, visible, board, type, updateBoard } = props;
-    console.log(board);
     const defaultConference = {
-        title: '',
-        timeOccur: '',
+        title: "",
+        timeOccur: "",
         organizer: convertUser(getUser()),
-        location: '',
-        paperRequirement: '',
-        deadlineSubmission: '',
-        joinTarget: '',
-        postMd: '',
+        location: "",
+        paperRequirement: "",
+        deadlineSubmission: "",
+        joinTarget: "",
+        postMd: "",
         lanes: [
             {
                 id: uuid(),
                 currentPage: 1,
-                title: 'Paper submitted for conference',
+                title: "Paper submitted for conference",
                 cards: [],
             },
             {
                 id: uuid(),
                 currentPage: 1,
-                title: 'Reject',
+                title: "Reject",
                 cards: [],
             },
             {
                 id: uuid(),
                 currentPage: 1,
-                title: 'Accept',
+                title: "Accept",
                 cards: [],
             },
         ],
@@ -134,7 +133,7 @@ export const BoardModal = (props) => {
         //     className={!visible && 'hidden'}
         // >
         <Modal
-            title={type === ConferenceFormType.CREATE ? 'Add new conference' : 'Update conference'}
+            title={type === ConferenceFormType.CREATE ? "Add new conference" : "Update conference"}
             width="1300px"
             visible={visible}
             onCancel={closeModal}
@@ -146,7 +145,7 @@ export const BoardModal = (props) => {
                         <label htmlFor="organizer">Organizer (You)</label>
                         <Input
                             onChange={handleTitleChange}
-                            value={organizer?.displayName || ''}
+                            value={organizer?.displayName || ""}
                             id="organizer"
                             disabled
                         />
@@ -232,7 +231,7 @@ export const BoardModal = (props) => {
                     loading={loading}
                     disabled={isEmptyText(title)}
                 >
-                    {type === ConferenceFormType.CREATE ? 'Add' : 'Update'}
+                    {type === ConferenceFormType.CREATE ? "Add" : "Update"}
                 </Button>
             </form>
         </Modal>
