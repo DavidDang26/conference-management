@@ -1,17 +1,17 @@
-import { Dropdown, Menu } from 'antd';
-import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
-import { Link, withRouter } from 'react-router-dom';
-import React from 'react';
-import { signOut } from '../application/services/auth';
-import { ROUTES } from '../application/constants';
-import { useStateValue } from '../application/state-provider';
+import { Dropdown, Menu } from "antd";
+import { HomeOutlined, SettingOutlined } from "@ant-design/icons";
+import { Link, withRouter } from "react-router-dom";
+import React from "react";
+import { signOut } from "../application/services/auth";
+import { ROUTES } from "../application/constants";
+import { useStateValue } from "../application/state-provider";
 
 export const Navbar = withRouter(() => {
     const [state, dispatch] = useStateValue();
     const { user } = state;
     return (
         <nav
-            className={`flex justify-between bg-gray-500 text-white px-5 py-1 absolute z-10 top-0 left-0 right-0`}
+            className={`flex justify-between bg-gray-500 text-white px-10 py-1 absolute z-10 top-0 left-0 right-0`}
         >
             <Link to={ROUTES.BOARDS}>
                 <div
@@ -28,7 +28,7 @@ export const Navbar = withRouter(() => {
                         </Menu.Item>
                     </Menu>
                 }
-                trigger={['click']}
+                trigger={["click"]}
             >
                 <div className={`w-10 h-10 flex  justify-center items-center rounded text-white`}>
                     {user && user.photoURL ? (

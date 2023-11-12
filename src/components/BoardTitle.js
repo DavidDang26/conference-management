@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
     StarFilled,
     StarOutlined,
     DeleteOutlined,
     EditOutlined,
     UsergroupAddOutlined,
-} from '@ant-design/icons';
-import { Button } from 'antd';
-import PropTypes from 'prop-types';
-import { BoardModal } from './BoardModal';
-import { ConferenceFormType } from '../Constants';
-import { boardService } from '../application/services/board';
-import AddReviewerModal from '../components/AddReviewerModal';
+} from "@ant-design/icons";
+import { Button } from "antd";
+import PropTypes from "prop-types";
+import { BoardModal } from "./BoardModal";
+import { ConferenceFormType } from "../Constants";
+import { boardService } from "../application/services/board";
+import AddReviewerModal from "../components/AddReviewerModal";
 
 export const BoardTitle = ({
     title,
@@ -36,10 +36,10 @@ export const BoardTitle = ({
             onKeyDown={() => {}}
             onClick={() => handleBoardClick()}
             className={`h-32 rounded-md p-2 font-semibold flex flex-col ${
-                addition ? 'bg-gray-300 text-gray-900' : 'bg-gray-600 text-white justify-between'
+                addition ? "bg-gray-300 text-gray-900" : "bg-gray-600 text-white justify-between"
             }`}
         >
-            <div className={addition ? 'm-auto' : ''}>{title}</div>
+            <div className={addition ? "m-auto" : ""}>{title}</div>
             <div
                 role="button"
                 tabIndex={-1}
