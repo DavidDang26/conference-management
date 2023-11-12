@@ -45,47 +45,11 @@ class Card extends Component {
         return (
             <MovableCardWrapper data-id={id} onClick={onClick} style={style} className={className}>
                 <CardHeader>
-                    <CardTitle draggable={cardDraggable}>
-                        {editable ? (
-                            <InlineInput
-                                value={title}
-                                border
-                                placeholder={t("placeholder.title")}
-                                resize="vertical"
-                                onSave={(value) => updateCard({ title: value })}
-                            />
-                        ) : (
-                            title
-                        )}
-                    </CardTitle>
-                    <CardRightContent>
-                        {editable ? (
-                            <InlineInput
-                                value={label}
-                                border
-                                placeholder={t("placeholder.label")}
-                                resize="vertical"
-                                onSave={(value) => updateCard({ label: value })}
-                            />
-                        ) : (
-                            label
-                        )}
-                    </CardRightContent>
+                    <CardTitle draggable={cardDraggable}>{title}</CardTitle>
+                    <CardRightContent>{label}</CardRightContent>
                     {showDeleteButton && <DeleteButton onClick={this.onDelete} />}
                 </CardHeader>
-                <Detail>
-                    {editable ? (
-                        <InlineInput
-                            value={description}
-                            border
-                            placeholder={t("placeholder.description")}
-                            resize="vertical"
-                            onSave={(value) => updateCard({ description: value })}
-                        />
-                    ) : (
-                        description
-                    )}
-                </Detail>
+                <Detail>{description}</Detail>
                 {tags && tags.length > 0 && (
                     <Footer>
                         {tags.map((tag) => (

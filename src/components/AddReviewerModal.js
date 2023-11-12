@@ -15,22 +15,17 @@ const AddReviewerModal = ({ visible, closeModal, board }) => {
         })();
     }, []);
 
-    const fetchUsers = async () => {
-        await adminService.admins().on("value", (snapshot) => {
+    const fetchUsers = async () =>
+        adminService.admins().on("value", (snapshot) => {
             if (!snapshot) return;
             const userList = objectToArray(snapshot.val() || {});
             setUsers(userList);
             setReviewer(userList[0]);
         });
-    };
 
-    const handleSelectReviewer = (id) => {
-        setReviewer(users.find((user) => user.id === id));
-    };
+    const handleSelectReviewer = (id) => setReviewer(users.find((user) => user.id === id));
 
-    const handleAddReviewer = async () => {
-        await boardService.addReviewer(board.key, reviewer);
-    };
+    const handleAddReviewer = async () => boardService.addReviewer(board.key, reviewer);
 
     return (
         <Modal

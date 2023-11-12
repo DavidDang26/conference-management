@@ -11,6 +11,7 @@ import { BoardsPage } from "./pages/BoardsPage";
 import { BoardPage } from "./pages/BoardPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import RegistrationPage from "./pages/RegistrationPage";
+import RegistrationDetailPage from "./pages/RegistrationDetailPage";
 
 export const Content = withAuthentication(() => (
     <Router>
@@ -27,6 +28,11 @@ export const Content = withAuthentication(() => (
                     <Route exact path={ROUTES.BOARDS} component={BoardsPage} />
                     <Route exact path={ROUTES.BOARD} component={BoardPage} />
                     <Route exact path={ROUTES.REGISTRATION} component={RegistrationPage} />
+                    <Route
+                        exact
+                        path={ROUTES.REGISTRATION_DETAIL}
+                        component={RegistrationDetailPage}
+                    />
                     <Route component={NotFoundPage} />
                 </Switch>
             </div>

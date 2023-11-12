@@ -4,4 +4,5 @@ export const ROUTES = {
     BOARDS: "/boards",
     BOARD: "/boards/:board",
     REGISTRATION: "/registration",
+    REGISTRATION_DETAIL: "/registration/:conferenceId",
 };

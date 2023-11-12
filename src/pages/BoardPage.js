@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
-// import Board from "react-trello";
+import { withRouter, useHistory } from "react-router-dom";
 import { boardService } from "../data";
 import { withAuthorization } from "../auth/auth-hoc";
 import { BoardSkeleton } from "../components/BoardSkeleton";
 import CardModal from "../components/CardModal";
-import { useStateValue } from "../context/state-provider";
 import SideBar from "../components/SideBar";
 import Board from "../components/Board";
+import { Button } from "antd";
 
 export const BoardPage = withRouter(
     withAuthorization((authUser) => !!authUser)((props) => {
-        const [state, dispatch] = useStateValue();
         const [board, setBoard] = useState({
             lanes: [],
         });
@@ -19,8 +17,9 @@ export const BoardPage = withRouter(
         const [visible, setVisible] = useState(false);
         const [activeCard, setActiveCard] = useState({});
         const [activeLane, setActiveLane] = useState({});
+        const history = useHistory();
+
         const { authUser: user } = props;
-        console.log("🚀 ~ file: BoardPage.js:22 ~ withAuthorization ~ user:", user);
 
         useEffect(() => {
             (async () => {
@@ -56,7 +55,6 @@ export const BoardPage = withRouter(
             });
         };
 
-        // Fill empty properties that are important for Board component
         const prepareBoard = (board) => ({
             ...board,
             lanes: (board?.lanes || []).map((lane) => ({
@@ -84,6 +82,14 @@ export const BoardPage = withRouter(
                 <div className="w-5/6">
                     <div className="text-3xl pt-16 text-center bg-gray-700 text-white font-bold">
                         {board.title}
+                    </div>
+                    <div className="bg-gray-700 px-6">
+                        <Button
+                            type="primary"
+                            onClick={() => history.push(`/registration/${boardId()}`)}
+                        >
+                            Registration
+                        </Button>
                     </div>
                     <Board
                         className={`pt-5 px-5 bg-gray-700 h-full`}

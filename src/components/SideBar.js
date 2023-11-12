@@ -11,12 +11,12 @@ const sideBarComponent = [
         icon: BookOutlined,
         path: "/boards",
     },
-    {
-        id: 2,
-        text: "Registrations",
-        icon: UserSwitchOutlined,
-        path: "/registration",
-    },
+    // {
+    //     id: 2,
+    //     text: "Registrations",
+    //     icon: UserSwitchOutlined,
+    //     path: "/registration",
+    // },
 ];
 
 const SideBar = () => {

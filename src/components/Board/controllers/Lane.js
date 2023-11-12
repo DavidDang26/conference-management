@@ -207,9 +207,6 @@ class Lane extends Component {
                 >
                     {cardList}
                 </Container>
-                {editable && !addCardMode && (
-                    <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />
-                )}
                 {addCardMode && (
                     <components.NewCardForm
                         onCancel={this.hideEditableCard}

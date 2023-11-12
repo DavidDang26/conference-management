@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import Modal from "antd/lib/modal/Modal";
-import { useStateValue } from "../context/state-provider";
 import { Input } from "antd";
 import { v4 as uuid } from "uuid";
 import { convertUser } from "../utils/convertFromRaw";
 import moment from "moment";
 import Comment from "./Comment";
+import FeedBackModal from "./FeedBackModal";
+import { Button } from "antd";
 
 const CardModal = ({ card, closeModal, visible, addComment, user }) => {
-    console.log("🚀 ~ file: CardModal.js:11 ~ CardModal ~ user:", user);
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState(card.comments);
+    const [feedBackModalVisible, setFeedBackModalVisible] = useState(false);
 
     const handleCommentSubmit = async (e) => {
         if (e.code !== "Enter") return;
@@ -26,6 +27,7 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
             setComment("");
         }
     };
+
     return (
         <Modal
             visible={visible}
@@ -34,6 +36,11 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
             footer={null}
             width="1000px"
         >
+            <div>
+                <Button type="primary" onClick={() => setFeedBackModalVisible(true)}>
+                    Add review
+                </Button>
+            </div>
             <div className="mb-5">
                 <div className="font-bold text-xl">Link paper: </div>
                 <a target="_blank" href={card.paperLink}>
@@ -64,6 +71,11 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
                     )}
                 </div>
             </div>
+            <FeedBackModal
+                visible={feedBackModalVisible}
+                handleCancel={() => setFeedBackModalVisible(false)}
+                handleOk={() => setFeedBackModalVisible(false)}
+            />
         </Modal>
     );
 };
