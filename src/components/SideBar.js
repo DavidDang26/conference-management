@@ -1,13 +1,13 @@
 import React from "react";
 import { BookOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import { useStateValue } from "../application/state-provider";
+import { useStateValue } from "../context/state-provider";
 import { actionTypes } from "../auth/reducer";
 
 const sideBarComponent = [
     {
         id: 1,
-        text: "Conference",
+        text: "Conferences",
         icon: BookOutlined,
         path: "/boards",
     },

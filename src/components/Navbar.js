@@ -2,9 +2,9 @@ import { Dropdown, Menu } from "antd";
 import { HomeOutlined, SettingOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import React from "react";
-import { signOut } from "../application/services/auth";
-import { ROUTES } from "../application/constants";
-import { useStateValue } from "../application/state-provider";
+import { signOut } from "../data/auth";
+import { ROUTES } from "../constants";
+import { useStateValue } from "../context/state-provider";
 
 export const Navbar = withRouter(() => {
     const [state, dispatch] = useStateValue();

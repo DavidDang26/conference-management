@@ -1,15 +1,16 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import React, { useEffect, useState, useContext } from 'react';
-import { withRouter } from 'react-router-dom';
-import { AuthUserContext } from './auth-user-context';
-import { ROUTES } from '../application/constants';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import React, { useEffect, useState, useContext } from "react";
+import { withRouter } from "react-router-dom";
+import { AuthUserContext } from "./auth-user-context";
+import { ROUTES } from "../constants";
 
 export const withAuthentication = (Component) => (props) => {
     const [authUser, setAuthUser] = useState(null);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((authUser = null) => {
+            console.log(authUser);
             setAuthUser(authUser);
         });
     }, []);
@@ -32,5 +33,5 @@ export const withAuthorization = (authCondition) => (Component) =>
         }, [props.history]);
         const authUser = useContext(AuthUserContext);
 
-        return authUser ? <Component {...props} /> : null;
+        return authUser ? <Component authUser={authUser} {...props} /> : null;
     });

@@ -10,7 +10,7 @@ import { Button } from "antd";
 import PropTypes from "prop-types";
 import { BoardModal } from "./BoardModal";
 import { ConferenceFormType } from "../Constants";
-import { boardService } from "../application/services/board";
+import { boardService } from "../data/board";
 import AddReviewerModal from "../components/AddReviewerModal";
 
 export const BoardTitle = ({

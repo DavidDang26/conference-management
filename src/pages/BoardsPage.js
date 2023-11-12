@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserOutlined, StarOutlined } from "@ant-design/icons";
-import { boardService } from "../application/services";
+import { boardService } from "../data";
 import { withAuthorization } from "../auth/auth-hoc";
 import { BoardTitle } from "../components/BoardTitle";
 import { BoardModal } from "../components/BoardModal";
 import { BoardsPageSkeleton } from "../components/BoardsPageSkeleton";
-import { useStateValue } from "../application/state-provider";
 import { ConferenceFormType } from "../Constants";
 import { objectToArray } from "../utils";
 import SideBar from "../components/SideBar";
 
-export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
-    const [state, dispatch] = useStateValue();
+export const BoardsPage = withAuthorization((authUser) => !!authUser)((props) => {
     const [boards, setBoards] = useState({});
     const [loading, setLoading] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const history = useHistory();
-    const { user } = state;
+    const { authUser: user } = props;
 
     useEffect(() => {
         setLoading(true);
@@ -53,7 +51,13 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
         return <BoardsPageSkeleton count={4} />;
     }
 
-    const starredBoards = boards.filter((board) => board.starred);
+    const ownerBoards = boards.filter((board) => board.organizer.id === user.uid);
+
+    const reviewerBoards = boards.filter((board) =>
+        (board && board.reviewers ? Object.keys(board.reviewers) : []).includes(user.uid)
+    );
+
+    const starredBoards = [...ownerBoards, ...reviewerBoards].filter((board) => board.starred);
 
     return (
         <div className="flex gap-5">
@@ -91,21 +95,17 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">
-                    {boards
-                        .filter((conference) => conference.organizer.id === user.uid)
-                        .map((board) => (
-                            <BoardTitle
-                                key={board?.key}
-                                title={board.title}
-                                handleBoardClick={() => history.push(`boards/${board?.key}`)}
-                                handleBoardStarToggling={() =>
-                                    starBoard(board?.key, !board.starred)
-                                }
-                                handleDeleteBoard={() => deleteBoard(board?.key)}
-                                starred={board.starred}
-                                board={board}
-                            />
-                        ))}
+                    {ownerBoards.map((board) => (
+                        <BoardTitle
+                            key={board?.key}
+                            title={board.title}
+                            handleBoardClick={() => history.push(`boards/${board?.key}`)}
+                            handleBoardStarToggling={() => starBoard(board?.key, !board.starred)}
+                            handleDeleteBoard={() => deleteBoard(board?.key)}
+                            starred={board.starred}
+                            board={board}
+                        />
+                    ))}
                     <BoardTitle
                         title="Add new conference"
                         addition={true}
@@ -119,27 +119,18 @@ export const BoardsPage = withAuthorization((authUser) => !!authUser)(() => {
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">
-                    {boards
-                        .filter((conference) =>
-                            (conference && conference.reviewers
-                                ? Object.keys(conference.reviewers)
-                                : []
-                            ).includes(user.uid)
-                        )
-                        .map((board) => (
-                            <BoardTitle
-                                key={board?.key}
-                                title={board.title}
-                                handleBoardClick={() => history.push(`boards/${board?.key}`)}
-                                handleBoardStarToggling={() =>
-                                    starBoard(board?.key, !board.starred)
-                                }
-                                handleDeleteBoard={() => deleteBoard(board?.key)}
-                                starred={board.starred}
-                                board={board}
-                                reviewConference={true}
-                            />
-                        ))}
+                    {reviewerBoards.map((board) => (
+                        <BoardTitle
+                            key={board?.key}
+                            title={board.title}
+                            handleBoardClick={() => history.push(`boards/${board?.key}`)}
+                            handleBoardStarToggling={() => starBoard(board?.key, !board.starred)}
+                            handleDeleteBoard={() => deleteBoard(board?.key)}
+                            starred={board.starred}
+                            board={board}
+                            reviewConference={true}
+                        />
+                    ))}
                 </div>
 
                 <BoardModal

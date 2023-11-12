@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { ROUTES } from "./application/constants";
+import { ROUTES } from "./constants";
 import "./index.css";
 import { withAuthentication } from "./auth/auth-hoc";
 import { AuthUserContext } from "./auth/auth-user-context";

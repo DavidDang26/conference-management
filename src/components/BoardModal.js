@@ -2,7 +2,7 @@ import { Button, Input, Modal, DatePicker } from "antd";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { getUser } from "../application/services/auth";
+import { getUser } from "../data/auth";
 import { convertUser } from "../utils/convertFromRaw";
 import { ConferenceFormType } from "../Constants";
 import MDEditor from "@uiw/react-md-editor";

@@ -1,18 +1,18 @@
-import { Button, Form, Input } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { auth, provider } from '../application/services/firebase';
-import { actionTypes } from '../auth/reducer';
-import { useStateValue } from '../application/state-provider';
-import { authService } from '../application/services';
-import { ROUTES } from '../application/constants';
-import { adminService } from '../application/services/user';
-import { convertUser } from '../utils/convertFromRaw';
+import { Button, Form, Input } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { auth, provider } from "../data/firebase";
+import { actionTypes } from "../auth/reducer";
+import { useStateValue } from "../context/state-provider";
+import { authService } from "../data";
+import { ROUTES } from "../constants";
+import { adminService } from "../data/user";
+import { convertUser } from "../utils/convertFromRaw";
 
 const SignInForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [, dispatch] = useStateValue();
@@ -53,7 +53,7 @@ const SignInForm = () => {
             <Form onFinish={onFinish}>
                 <Form.Item name="email">
                     <Input
-                        prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
                         placeholder="Email"
                         onChange={(event) => setEmail(event.target.value)}
                     />
@@ -61,7 +61,7 @@ const SignInForm = () => {
 
                 <Form.Item name="password">
                     <Input
-                        prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
                         onChange={(event) => setPassword(event.target.value)}
                         type="password"
                         placeholder="Password"

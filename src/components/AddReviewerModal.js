@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Modal } from 'antd';
-import { adminService } from '../application/services/user';
-import { objectToArray } from '../utils';
-import { Select } from 'antd';
-import { boardService } from '../application/services';
+import React, { useEffect, useState } from "react";
+import { Modal } from "antd";
+import { adminService } from "../data/user";
+import { objectToArray } from "../utils";
+import { Select } from "antd";
+import { boardService } from "../data";
 
 const AddReviewerModal = ({ visible, closeModal, board }) => {
     const [users, setUsers] = useState([]);
@@ -16,7 +16,7 @@ const AddReviewerModal = ({ visible, closeModal, board }) => {
     }, []);
 
     const fetchUsers = async () => {
-        await adminService.admins().on('value', (snapshot) => {
+        await adminService.admins().on("value", (snapshot) => {
             if (!snapshot) return;
             const userList = objectToArray(snapshot.val() || {});
             setUsers(userList);

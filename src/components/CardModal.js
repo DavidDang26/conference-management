@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import Modal from 'antd/lib/modal/Modal';
-import { useStateValue } from '../application/state-provider';
-import { Input } from 'antd';
-import { v4 as uuid } from 'uuid';
-import { convertUser } from '../utils/convertFromRaw';
-import moment from 'moment';
-import Comment from './Comment';
+import React, { useState } from "react";
+import Modal from "antd/lib/modal/Modal";
+import { useStateValue } from "../context/state-provider";
+import { Input } from "antd";
+import { v4 as uuid } from "uuid";
+import { convertUser } from "../utils/convertFromRaw";
+import moment from "moment";
+import Comment from "./Comment";
 
-const CardModal = ({ card, closeModal, visible, addComment }) => {
-    const [comment, setComment] = useState('');
+const CardModal = ({ card, closeModal, visible, addComment, user }) => {
+    console.log("🚀 ~ file: CardModal.js:11 ~ CardModal ~ user:", user);
+    const [comment, setComment] = useState("");
     const [comments, setComments] = useState(card.comments);
-    const [state, dispatch] = useStateValue();
-    const { user } = state;
 
     const handleCommentSubmit = async (e) => {
-        if (e.code !== 'Enter') return;
+        if (e.code !== "Enter") return;
         else {
             const newComment = {
                 id: uuid(),
@@ -24,13 +23,13 @@ const CardModal = ({ card, closeModal, visible, addComment }) => {
             };
             await addComment(newComment);
             setComments((comments) => [...comments, newComment]);
-            setComment('');
+            setComment("");
         }
     };
     return (
         <Modal
             visible={visible}
-            title={card?.title || ''}
+            title={card?.title || ""}
             onCancel={closeModal}
             footer={null}
             width="1000px"

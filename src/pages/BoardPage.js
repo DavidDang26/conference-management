@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import Board from "react-trello";
-import { boardService } from "../application/services";
+// import Board from "react-trello";
+import { boardService } from "../data";
 import { withAuthorization } from "../auth/auth-hoc";
 import { BoardSkeleton } from "../components/BoardSkeleton";
 import CardModal from "../components/CardModal";
-import { useStateValue } from "../application/state-provider";
+import { useStateValue } from "../context/state-provider";
 import SideBar from "../components/SideBar";
+import Board from "../components/Board";
 
 export const BoardPage = withRouter(
     withAuthorization((authUser) => !!authUser)((props) => {
@@ -18,7 +19,8 @@ export const BoardPage = withRouter(
         const [visible, setVisible] = useState(false);
         const [activeCard, setActiveCard] = useState({});
         const [activeLane, setActiveLane] = useState({});
-        const { user } = state;
+        const { authUser: user } = props;
+        console.log("🚀 ~ file: BoardPage.js:22 ~ withAuthorization ~ user:", user);
 
         useEffect(() => {
             (async () => {
@@ -86,24 +88,16 @@ export const BoardPage = withRouter(
                     <Board
                         className={`pt-5 px-5 bg-gray-700 h-full`}
                         canAddLanes={
-                            board.organizer &&
-                            board.organizer.id &&
-                            board.organizer.id === state.user.uid
+                            board.organizer && board.organizer.id && board.organizer.id === user.uid
                         }
                         cardDraggable={
-                            board.organizer &&
-                            board.organizer.id &&
-                            board.organizer.id === state.user.uid
+                            board.organizer && board.organizer.id && board.organizer.id === user.uid
                         }
                         editable={
-                            board.organizer &&
-                            board.organizer.id &&
-                            board.organizer.id === state.user.uid
+                            board.organizer && board.organizer.id && board.organizer.id === user.uid
                         }
                         draggable={
-                            board.organizer &&
-                            board.organizer.id &&
-                            board.organizer.id === state.user.uid
+                            board.organizer && board.organizer.id && board.organizer.id === user.uid
                         }
                         data={{
                             lanes: board.lanes || [],
@@ -128,6 +122,7 @@ export const BoardPage = withRouter(
                         card={activeCard}
                         addComment={addComment}
                         key={activeCard?.id}
+                        user={user}
                     />
                 </div>
             </div>
