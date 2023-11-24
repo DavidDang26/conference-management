@@ -7,6 +7,7 @@ import CardModal from "../components/CardModal";
 import SideBar from "../components/SideBar";
 import Board from "../components/Board";
 import { Button } from "antd";
+import emailjs from "@emailjs/browser";
 
 export const BoardPage = withRouter(
     withAuthorization((authUser) => !!authUser)((props) => {
@@ -55,6 +56,28 @@ export const BoardPage = withRouter(
             });
         };
 
+        const sendEmail = async (e) => {
+            e.preventDefault();
+
+            const data = (await boardService.getBoard(boardId())).val();
+            const updateBoard = prepareBoard(data);
+            const acceptedLane = updateBoard.lanes.find((lane) => lane.title === "Accept");
+            const listEmail = acceptedLane.cards.map((card) => card.author.email);
+            const decision = window.confirm("Send email for:\n " + listEmail.join("\n"));
+            if (!decision) return;
+
+            emailjs
+                .sendForm("service_sry761i", "template_v05mr49", e.target, "RrLD5e67Nsqrrz3xR")
+                .then(
+                    (result) => {
+                        window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
+                    },
+                    (error) => {
+                        console.log(error.text);
+                    }
+                );
+        };
+
         const prepareBoard = (board) => ({
             ...board,
             lanes: (board?.lanes || []).map((lane) => ({
@@ -83,13 +106,20 @@ export const BoardPage = withRouter(
                     <div className="text-3xl pt-16 text-center bg-gray-700 text-white font-bold">
                         {board.title}
                     </div>
-                    <div className="bg-gray-700 px-6">
+                    <div className="bg-gray-700 px-6 flex gap-5 py-2">
                         <Button
                             type="primary"
                             onClick={() => history.push(`/registration/${boardId()}`)}
                         >
                             Registration
                         </Button>
+                        <form onSubmit={sendEmail}>
+                            <input
+                                className="bg-green-500 px-5 py-1 text-white rounded-sm cursor-pointer"
+                                type="submit"
+                                value="Send email for accepted author"
+                            />
+                        </form>
                     </div>
                     <Board
                         className={`pt-5 px-5 bg-gray-700 h-full`}

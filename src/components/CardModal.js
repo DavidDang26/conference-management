@@ -13,6 +13,8 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
     const [comments, setComments] = useState(card.comments);
     const [feedBackModalVisible, setFeedBackModalVisible] = useState(false);
 
+    const { author } = card;
+
     const handleCommentSubmit = async (e) => {
         if (e.code !== "Enter") return;
         else {
@@ -34,14 +36,27 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
             title={card?.title || ""}
             onCancel={closeModal}
             footer={null}
-            width="1000px"
+            width="700px"
         >
-            <div>
-                <Button type="primary" onClick={() => setFeedBackModalVisible(true)}>
-                    Add review
-                </Button>
-            </div>
             <div className="mb-5">
+                <div className="bg-blue-200 w-1/3 px-3 py-2 mb-3 rounded-md">
+                    <div className="font-bold">Author informations</div>
+                    {author && (
+                        <>
+                            <div className="flex items-center gap-3">
+                                <img
+                                    className="rounded-full"
+                                    src={author.photoURL}
+                                    alt="author ava"
+                                    width={50}
+                                />
+                                <div className="text-xl">{author.displayName}</div>
+                            </div>
+
+                            <div className="italic">{author.email}</div>
+                        </>
+                    )}
+                </div>
                 <div className="font-bold text-xl">Link paper: </div>
                 <a target="_blank" href={card.paperLink}>
                     {card.paperLink}
@@ -50,6 +65,11 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
             <div className="mb-5">
                 <div className="font-bold text-xl">Description: </div>
                 <div>{card.description}</div>
+            </div>
+            <div>
+                <Button type="primary" onClick={() => setFeedBackModalVisible(true)}>
+                    Add review
+                </Button>
             </div>
             <div>
                 <div className="font-bold text-xl">Discussion</div>
