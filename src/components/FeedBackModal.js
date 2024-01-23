@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "antd/lib/modal/Modal";
 import MDEditor from "@uiw/react-md-editor";
 
@@ -39,13 +39,14 @@ const feedBackStructure = [
 ];
 
 const FeedBackModal = ({ visible, handleOk, handleCancel }) => {
+    const [review, setReview] = useState("Input your paper review here");
     return (
         <Modal
             className="w-3/4"
             title="Form review paper"
             visible={visible}
-            onOk={handleOk}
-            onCancel={handleCancel}
+            onOk={() => handleOk(review)}
+            onCancel={() => handleCancel(review)}
             okText="Accept"
             cancelText="Reject"
             okButtonProps={{
@@ -97,7 +98,8 @@ const FeedBackModal = ({ visible, handleOk, handleCancel }) => {
                 </div>
             </form>
             <div className="container mt-5 mb-5">
-                <MDEditor value="Input your paper review here" />
+                <MDEditor value={review} onChange={(value) => setReview(value)} />
+                <div>{review}</div>
                 {/* <MDEditor.Markdown source={value} style={{ whiteSpace: "pre-wrap" }} /> */}
             </div>
         </Modal>

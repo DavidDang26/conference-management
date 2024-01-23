@@ -88,6 +88,26 @@ const CardModal = ({
                 <div className="font-bold text-xl">Description: </div>
                 <div>{card.description}</div>
             </div>
+            <div className="mb-5">
+                <div className="font-bold text-xl">Review history: </div>
+                {card?.reviews && (
+                    <div>
+                        {card.reviews.map((review) => (
+                            <div className="flex gap-5 my-2 flex items-center">
+                                <div
+                                    className={`bg-${
+                                        review.type === "Accept" ? "green" : "red"
+                                    }-400 px-3 py-1 font-bold rounded-md`}
+                                >
+                                    {review.type}
+                                </div>
+                                <div>{review.text}</div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                {/* <div>{card?.review && card?.reviews.map((review) => <div>{review.text}</div>)}</div> */}
+            </div>
             <div>
                 <Button type="primary" onClick={() => setFeedBackModalVisible(true)}>
                     Add review
@@ -115,7 +135,7 @@ const CardModal = ({
             </div>
             <FeedBackModal
                 visible={feedBackModalVisible}
-                handleCancel={async () => {
+                handleCancel={async (review) => {
                     const newCardsForLane = lane.cards.filter(
                         (cardItem) => cardItem.id !== card.id
                     );
@@ -130,7 +150,15 @@ const CardModal = ({
                         if (index === board.lanes.length - 1)
                             return {
                                 ...laneItem,
-                                cards: [...laneItem.cards, card],
+                                cards: [
+                                    ...laneItem.cards,
+                                    {
+                                        ...card,
+                                        reviews: Array.isArray(card?.reviews)
+                                            ? [...card.reviews, { text: review, type: "Reject" }]
+                                            : [{ text: review, type: "Reject" }],
+                                    },
+                                ],
                             };
                         return laneItem;
                     });
@@ -138,7 +166,7 @@ const CardModal = ({
                     setBoard(prepareBoard({ ...board, lanes: newLanes }));
                     setFeedBackModalVisible(false);
                 }}
-                handleOk={async () => {
+                handleOk={async (review) => {
                     const newCardsForLane = lane.cards.filter(
                         (cardItem) => cardItem.id !== card.id
                     );
@@ -154,7 +182,15 @@ const CardModal = ({
                         if (index === laneIndex + 1)
                             return {
                                 ...laneItem,
-                                cards: [...laneItem.cards, card],
+                                cards: [
+                                    ...laneItem.cards,
+                                    {
+                                        ...card,
+                                        reviews: Array.isArray(card?.reviews)
+                                            ? [...card.reviews, { text: review, type: "Accept" }]
+                                            : [{ text: review, type: "Accept" }],
+                                    },
+                                ],
                             };
                         return laneItem;
                     });
