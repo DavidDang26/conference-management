@@ -159,6 +159,11 @@ export const BoardPage = withRouter(
                         addComment={addComment}
                         key={activeCard?.id}
                         user={user}
+                        board={board}
+                        boardId={boardId()}
+                        lane={activeLane}
+                        setBoard={setBoard}
+                        prepareBoard={prepareBoard}
                     />
                 </div>
             </div>

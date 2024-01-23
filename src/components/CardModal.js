@@ -7,8 +7,20 @@ import moment from "moment";
 import Comment from "./Comment";
 import FeedBackModal from "./FeedBackModal";
 import { Button } from "antd";
+import { boardService } from "../data";
 
-const CardModal = ({ card, closeModal, visible, addComment, user }) => {
+const CardModal = ({
+    board,
+    boardId,
+    card,
+    lane,
+    closeModal,
+    visible,
+    addComment,
+    user,
+    setBoard,
+    prepareBoard,
+}) => {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState(card.comments);
     const [feedBackModalVisible, setFeedBackModalVisible] = useState(false);
@@ -103,8 +115,55 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
             </div>
             <FeedBackModal
                 visible={feedBackModalVisible}
-                handleCancel={() => setFeedBackModalVisible(false)}
-                handleOk={() => setFeedBackModalVisible(false)}
+                handleCancel={async () => {
+                    const newCardsForLane = lane.cards.filter(
+                        (cardItem) => cardItem.id !== card.id
+                    );
+                    const newLanes = board.lanes.map((laneItem, index) => {
+                        if (laneItem.id === lane.id) {
+                            return {
+                                ...laneItem,
+                                cards: newCardsForLane,
+                            };
+                        }
+
+                        if (index === board.lanes.length - 1)
+                            return {
+                                ...laneItem,
+                                cards: [...laneItem.cards, card],
+                            };
+                        return laneItem;
+                    });
+                    await boardService.updateBoard(boardId, { lanes: newLanes });
+                    setBoard(prepareBoard({ ...board, lanes: newLanes }));
+                    setFeedBackModalVisible(false);
+                }}
+                handleOk={async () => {
+                    const newCardsForLane = lane.cards.filter(
+                        (cardItem) => cardItem.id !== card.id
+                    );
+                    const laneIndex = board.lanes.findIndex((laneItem) => laneItem.id === lane.id);
+                    const newLanes = board.lanes.map((laneItem, index) => {
+                        if (laneItem.id === lane.id) {
+                            return {
+                                ...laneItem,
+                                cards: newCardsForLane,
+                            };
+                        }
+
+                        if (index === laneIndex + 1)
+                            return {
+                                ...laneItem,
+                                cards: [...laneItem.cards, card],
+                            };
+                        return laneItem;
+                    });
+                    await boardService.updateBoard(boardId, {
+                        lanes: newLanes,
+                    });
+                    setBoard(prepareBoard({ ...board, lanes: newLanes }));
+                    setFeedBackModalVisible(false);
+                }}
             />
         </Modal>
     );

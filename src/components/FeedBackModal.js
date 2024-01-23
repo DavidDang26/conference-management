@@ -46,6 +46,24 @@ const FeedBackModal = ({ visible, handleOk, handleCancel }) => {
             visible={visible}
             onOk={handleOk}
             onCancel={handleCancel}
+            okText="Accept"
+            cancelText="Reject"
+            okButtonProps={{
+                style: {
+                    backgroundColor: "green", // Set your desired color here
+                    borderColor: "green", // Set border color if needed
+                    color: "white", // Set text color
+                    fontWeight: "bold",
+                },
+            }}
+            cancelButtonProps={{
+                style: {
+                    backgroundColor: "red", // Set your desired color here
+                    borderColor: "red", // Set border color if needed
+                    color: "white", // Set text color
+                    fontWeight: "bold",
+                },
+            }}
         >
             <form>
                 <div className="text-md italic">
