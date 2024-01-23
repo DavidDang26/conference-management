@@ -57,6 +57,16 @@ const CardModal = ({ card, closeModal, visible, addComment, user }) => {
                         </>
                     )}
                 </div>
+                <div className="mb-5">
+                    <div className="font-bold text-xl">Payment State </div>
+                    <div
+                        className={`bg-${
+                            card?.paymentStatus === "Paid" ? "green" : "red"
+                        }-400 w-20 rounded-md font-bold flex items-center justify-center`}
+                    >
+                        <div className="mx-3">{card?.paymentStatus || "Pending"}</div>
+                    </div>
+                </div>
                 <div className="font-bold text-xl">Link paper: </div>
                 <a target="_blank" href={card.paperLink}>
                     {card.paperLink}
